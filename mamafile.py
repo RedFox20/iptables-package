@@ -28,10 +28,6 @@ class iptables(mama.BuildTarget):
 
     def package(self):
         self.export_include('iptables-built/include', build_dir=True)
-        # self.export_lib('iptables-built/lib/libxtables.so', build_dir=True)
-        # self.export_lib('iptables-built/lib/libxtables.so.12', build_dir=True)
-        self.export_lib('iptables-built/lib/libxtables.so.12.7.0', build_dir=True)
-        # self.export_lib('iptables-built/lib/libip4tc.so', build_dir=True)
-        # self.export_lib('iptables-built/lib/libip4tc.so.2', build_dir=True)
-        self.export_lib('iptables-built/lib/libip4tc.so.2.0.0', build_dir=True)
+        self.export_lib('iptables-built/lib/libxtables.so', build_dir=True)
+        self.export_lib('iptables-built/lib/libip4tc.so', build_dir=True)
         # libxtables syslibs: libc.so.6, ld.so.1
