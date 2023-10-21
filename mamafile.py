@@ -33,7 +33,8 @@ class iptables(mama.BuildTarget):
 
         if self.iptables.should_build():
             iptables_opts = '--with-gnu-ld --disable-ipv6 --disable-nftables'
-            iptables_opts += ' --enable-silent-rules --enable-devel --enable-devel'
+            iptables_opts += ' --enable-silent-rules --enable-devel'
+            iptables_opts += ' --disable-shared --enable-static' # build /sbin/iptables binary as static
             self.iptables.extra_env['libmnl_CFLAGS'] = f"-I{self.libmnl.install_dir('include')} "
             self.iptables.extra_env['libmnl_LIBS'] = self.libmnl.install_dir('lib/libmnl.so')
             self.iptables.build(options=iptables_opts, multithreaded=True)
@@ -41,9 +42,11 @@ class iptables(mama.BuildTarget):
             console('sbin/iptables already built', color='green')
 
     def package(self):
+        self.export_asset('iptables-built/sbin/iptables', build_dir=True)
         self.export_include('iptables-built/include', build_dir=True)
-        self.export_include('libmnl-built/include', build_dir=True)
         self.export_lib('iptables-built/lib/libxtables.so', build_dir=True)
         self.export_lib('iptables-built/lib/libip4tc.so', build_dir=True)
+
+        # TODO: might need to create a separate package for libmnl
+        self.export_include('libmnl-built/include', build_dir=True)
         self.export_lib('libmnl-built/lib/libmnl.so', build_dir=True)
-        # libxtables syslibs: libc.so.6, ld.so.1
