@@ -9,12 +9,12 @@ class iptables(mama.BuildTarget):
 
     def init(self):
         self.libmnl = self.gnu_project('libmnl', '1.0.5',
-            url='https://kratt.codefox.ee/linux/{{project}}.tar.bz2',
+            url='http://kratt.codefox.ee/linux/{{project}}.tar.bz2',
             build_products=[
                 BuildProduct('{{installed}}/lib/libmnl.a', None),
             ])
         self.iptables = self.gnu_project('iptables', '1.8.9',
-            url='https://kratt.codefox.ee/linux/{{project}}.tar.xz',
+            url='http://kratt.codefox.ee/linux/{{project}}.tar.xz',
             build_products=[
                 BuildProduct('{{installed}}/sbin/iptables', None),
                 BuildProduct('{{installed}}/lib/libxtables.a', None),
