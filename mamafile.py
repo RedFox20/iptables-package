@@ -28,7 +28,7 @@ class iptables(mama.BuildTarget):
 
     def build(self):
         if self.libmnl.should_build():
-            self.libmnl.build(options='--enable-static', multithreaded=True)
+            self.libmnl.build(options='--enable-static')
 
         if self.iptables.should_build():
             iptables_opts = '--with-gnu-ld --disable-ipv6 --disable-nftables'
@@ -36,7 +36,7 @@ class iptables(mama.BuildTarget):
             iptables_opts += ' --disable-shared --enable-static' # build everything as static
             self.iptables.extra_env['libmnl_CFLAGS'] = f"-I{self.libmnl.install_dir('include')} "
             self.iptables.extra_env['libmnl_LIBS'] = self.libmnl.install_dir('lib/libmnl.a')
-            self.iptables.build(options=iptables_opts, multithreaded=True)
+            self.iptables.build(options=iptables_opts)
         else:
             console('sbin/iptables already built', color='green')
 
