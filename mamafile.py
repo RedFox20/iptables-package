@@ -16,6 +16,7 @@ class iptables(mama.BuildTarget):
         self.iptables = self.gnu_project('iptables', '1.8.9',
             url='http://kratt.codefox.ee/linux/{{project}}.tar.xz',
             build_products=[
+                BuildProduct('{{installed}}/include', '{{build}}', is_dir=True),
                 BuildProduct('{{installed}}/sbin/iptables', '{{build}}/sbin/iptables'),
                 BuildProduct('{{installed}}/lib/libxtables.a', '{{build}}/lib/libxtables.a'),
                 BuildProduct('{{installed}}/lib/libip4tc.a', '{{build}}/lib/libip4tc.a'),
