@@ -16,9 +16,9 @@ class iptables(mama.BuildTarget):
         self.iptables = self.gnu_project('iptables', '1.8.9',
             url='http://kratt.codefox.ee/linux/{{project}}.tar.xz',
             build_products=[
-                BuildProduct('{{installed}}/sbin/iptables', None),
-                BuildProduct('{{installed}}/lib/libxtables.a', None),
-                BuildProduct('{{installed}}/lib/libip4tc.a', None),
+                BuildProduct('{{installed}}/sbin/iptables', '{{build}}/sbin/iptables'),
+                BuildProduct('{{installed}}/lib/libxtables.a', '{{build}}/lib/libxtables.a'),
+                BuildProduct('{{installed}}/lib/libip4tc.a', '{{build}}/lib/libip4tc.a'),
             ])
 
     def settings(self):
@@ -37,11 +37,12 @@ class iptables(mama.BuildTarget):
             self.iptables.extra_env['libmnl_CFLAGS'] = f"-I{self.libmnl.install_dir('include')} "
             self.iptables.extra_env['libmnl_LIBS'] = self.libmnl.install_dir('lib/libmnl.a')
             self.iptables.build(options=iptables_opts)
+            self.iptables.deploy_all_products()
         else:
             console('sbin/iptables already built', color='green')
 
     def package(self):
-        self.export_asset('iptables-built/sbin/iptables', build_dir=True)
-        self.export_include('iptables-built/include', build_dir=True)
-        self.export_lib('iptables-built/lib/libxtables.a', build_dir=True)
-        self.export_lib('iptables-built/lib/libip4tc.a', build_dir=True)
+        self.export_include('include', build_dir=True)
+        self.export_asset('sbin/iptables', category='sbin', build_dir=True)
+        self.export_lib('lib/libxtables.a', build_dir=True)
+        self.export_lib('lib/libip4tc.a', build_dir=True)
